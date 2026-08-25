@@ -26,7 +26,7 @@ await expect(page).toHaveTitle("Google");
 
 });
 
-test.only ('test case 1', async ({page})=>
+test ('test case 1', async ({page})=>
 
     {
         const userName = page.locator('input#username');
