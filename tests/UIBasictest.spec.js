@@ -1,4 +1,5 @@
 const {test, expect} = require ('@playwright/test');
+const { text } = require('node:stream/consumers');
 
 test('Browser Context Playwright test', async ({browser})=>
 
@@ -74,6 +75,7 @@ test.only ('UI Controls', async ({page})=>
     const userName = page.locator('input#username');
     const signIn = page.locator('input#signInBtn');
     const pass = page.locator('input#password');
+    const documentLink = page.locator("[href$='https://rahulshettyacademy.com/documents-request']");
 
     const dropdown = page.locator("select.form-control");
 
@@ -95,7 +97,44 @@ test.only ('UI Controls', async ({page})=>
 
     expect (await page.locator("#terms").isChecked()).toBeFalsy();
     
-    await page.pause();
+    await expect(documentLink).toHaveAttribute("class", "blinkingText");
+
+
+
+    //await page.pause();
 
     
  });
+
+ test ('Child Window', async ({browser})=>
+
+{
+
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    const documentLink = page.locator("[href$='https://rahulshettyacademy.com/documents-request']");
+
+    
+    const [newPage] = await Promise.all(
+
+
+    [    
+        context.waitForEvent('page'),
+      documentLink.click(),
+
+    ])
+
+        const text = await newPage.locator(".red").textContent();
+        const arrayText = text.split("@");
+        const domain =  arrayText[1].split(" ")[0]
+        console.log(text);
+        console.log(arrayText);
+        console.log(domain);
+        await page.locator("#username").fill(domain);
+        page.pause();
+
+    
+
+});
+
