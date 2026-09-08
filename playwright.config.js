@@ -1,5 +1,6 @@
 // @ts-check
 const { defineConfig, devices, chromium } = require('@playwright/test');
+const { trace } = require('node:console');
 
 
 
@@ -20,7 +21,10 @@ const config = {
   
   use: {
     browserName: 'chromium',
-    headless : false
+    headless : false,
+    screenshot : 'on',
+    trace: 'retain-on-failure' //on - off
+    // trace: 'on'
 
    
   },
