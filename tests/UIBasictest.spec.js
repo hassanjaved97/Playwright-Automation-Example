@@ -7,7 +7,7 @@ test('Browser Context Playwright test', async ({browser})=>
 
 const context = await browser.newContext();
 const page = await context.newPage();
-await page.goto("https://fnint.com", {waitUntil: 'domcontentloaded'});
+await page.goto("https://fnint.com", { waitUntil: 'domcontentloaded' });
 console.log(await page.title());
 await expect(page).toHaveTitle("FutureNow Technologies");
 
@@ -19,7 +19,7 @@ test('Page Playwright test', async ({page})=>
 {
 
 
-await page.goto("https://google.com", {waitUntil: 'domcontentloaded'});
+await page.goto("https://google.com", { waitUntil: 'domcontentloaded' });
 console.log(await page.title());
 await expect(page).toHaveTitle("Google");
 
@@ -34,7 +34,7 @@ test ('test case 1', async ({page})=>
         const signIn = page.locator('input#signInBtn');
         const pass = page.locator('input#password');
         const cardTitles = page.locator(".card-body a");
-        await page.goto("https://rahulshettyacademy.com/loginpagePractise/", {waitUntil: 'domcontentloaded'});
+        await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { waitUntil: 'domcontentloaded' });
         console.log(await page.title());
         // Css xpath
         await userName.fill("Umair");
@@ -60,7 +60,7 @@ test ('test case 1', async ({page})=>
         
         // console.log (await cardTitles.nth(0).textContent());
         // await expect(await cardTitles.nth(0)).toContainText('iphone X');
-        await page.waitForLoadState('domcontentloaded');
+        await page.waitForLoadState('networkidle');
         const allTitles = await cardTitles.allTextContents();
         console.log(allTitles); 
         
@@ -71,7 +71,7 @@ test ('test case 1', async ({page})=>
 test ('UI Controls', async ({page})=>
 
 {
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", {waitUntil: 'domcontentloaded'});
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { waitUntil: 'domcontentloaded' });
     const userName = page.locator('input#username');
     const signIn = page.locator('input#signInBtn');
     const pass = page.locator('input#password');
@@ -112,7 +112,7 @@ test ('UI Controls', async ({page})=>
 
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", {waitUntil: 'domcontentloaded'});
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { waitUntil: 'domcontentloaded' });
     const documentLink = page.locator("[href$='https://rahulshettyacademy.com/documents-request']");
 
     

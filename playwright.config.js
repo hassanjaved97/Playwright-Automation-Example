@@ -9,8 +9,7 @@ const { trace } = require('node:console');
  */
 const config = {
   testDir: './tests',
-  timeout: 120*1000,
-  retries: 2,
+  timeout: 60 * 1000,
 
   expect: {
 
@@ -25,12 +24,13 @@ const config = {
     headless : true,
     screenshot : 'on',
     trace: 'retain-on-failure', //on - off
-    navigationTimeout: 120*1000,
+    navigationTimeout: 30000,
     // trace: 'on'
 
-   
+    
   },
 
+  retries: 2,
   
 };
 
