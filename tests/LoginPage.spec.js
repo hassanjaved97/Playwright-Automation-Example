@@ -21,6 +21,7 @@ await page.locator('input[type="checkbox"]').check();
 
 await page.locator('input#login').click();
 
+await page.waitForLoadState('networkidle');
 await page.locator(".btn.btn-primary").click();
 
 await page.locator('#userEmail').fill("hassan102@gmail.com");

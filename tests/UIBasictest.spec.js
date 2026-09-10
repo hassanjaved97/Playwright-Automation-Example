@@ -60,7 +60,7 @@ test ('test case 1', async ({page})=>
         
         // console.log (await cardTitles.nth(0).textContent());
         // await expect(await cardTitles.nth(0)).toContainText('iphone X');
-        await page.waitForLoadState('Networkidle');
+        await page.waitForLoadState('networkidle');
         const allTitles = await cardTitles.allTextContents();
         console.log(allTitles); 
         
@@ -138,3 +138,4 @@ test ('UI Controls', async ({page})=>
 
 });
 
+ 
