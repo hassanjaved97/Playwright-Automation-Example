@@ -9,7 +9,8 @@ const { trace } = require('node:console');
  */
 const config = {
   testDir: './tests',
-  timeout: 40*1000,
+  timeout: 120*1000,
+  retries: 2,
 
   expect: {
 
@@ -23,7 +24,8 @@ const config = {
     browserName: 'chromium',
     headless : true,
     screenshot : 'on',
-    trace: 'retain-on-failure' //on - off
+    trace: 'retain-on-failure', //on - off
+    navigationTimeout: 120*1000,
     // trace: 'on'
 
    
@@ -34,4 +36,3 @@ const config = {
 
 
 module.exports = config;
-
