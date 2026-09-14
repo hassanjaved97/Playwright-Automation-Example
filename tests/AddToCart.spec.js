@@ -5,10 +5,11 @@ test ('Client App Login', async ({page}) =>
 
     {
         
+    const email = "hassan102@gmail.com";
     const productName = 'iphone 13 pro';   
     const products = page.locator(".card-body");    
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
-    await page.locator("#userEmail").fill("hassan102@gmail.com");
+    await page.locator("#userEmail").fill(email);
     await page.locator("#userPassword").fill("Pakistan@123");
     await page.locator("#login").click();
     await page.waitForLoadState('networkidle');
@@ -79,7 +80,11 @@ for (let i=0; i<optionsCount; ++i)
 
     }
 
-
+   await expect( await page.locator (".user__name label")).toHaveText(email);
+   await page.locator(".btnn.action__submit.ng-star-inserted").click();
+   await expect( await page.locator (".hero-primary")).toHaveText(" Thankyou for the order. ");
+   const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+   console.log(orderId);
 
 //await page.pause();
 
