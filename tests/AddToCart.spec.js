@@ -86,6 +86,31 @@ for (let i=0; i<optionsCount; ++i)
    const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
    console.log(orderId);
 
+   await page.locator("button[routerlink$='/dashboard/myorders']").click();
+   await page.locator("tbody").waitFor();
+   const rows = await page.locator("tbody tr");
+   const CountRows = await rows.count();
+
+   for (let i=0; i<CountRows; ++i)
+
+    {
+
+        const rowsOrderId = await rows.nth(i).locator("th").textContent();
+
+        if (orderId.includes(rowsOrderId))
+
+            {
+                await rows.nth(i).locator("button").first().click();
+                break;
+
+
+            }
+    }
+
+    //const orderIDDetails = await page.locator(".col-text.-main").textContent();
+    //expect (orderId.includes(orderIDDetails)).toBeTruthy();
+
+    //await expect(await page.locator(".col-text")).toHaveText(orderId);
 //await page.pause();
 
   });
