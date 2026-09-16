@@ -107,10 +107,15 @@ for (let i=0; i<optionsCount; ++i)
             }
     }
 
-    //const orderIDDetails = await page.locator(".col-text.-main").textContent();
-    //expect (orderId.includes(orderIDDetails)).toBeTruthy();
+    const orderIDDetails = await page.locator(".col-text.-main").textContent();
+    await expect (orderId.includes(orderIDDetails)).toBeTruthy();
 
     //await expect(await page.locator(".col-text")).toHaveText(orderId);
-//await page.pause();
+    //await page.pause();
 
-  });
+    const addressEmail = await page.locator(".address").first().locator(".text").first().textContent();
+    console.log(addressEmail);
+    expect(addressEmail?.trim()).toBe(email); 
+
+
+});
