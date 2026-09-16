@@ -4,7 +4,8 @@ const { text } = require('node:stream/consumers');
 test ('Client App Login', async ({page}) =>
 
     {
-        
+      
+//login    
     const email = "hassan102@gmail.com";
     const productName = 'iphone 13 pro';   
     const products = page.locator(".card-body");    
@@ -13,12 +14,13 @@ test ('Client App Login', async ({page}) =>
     await page.locator("#userPassword").fill("Pakistan@123");
     await page.locator("#login").click();
     await page.waitForLoadState('networkidle');
-
+    
+    
     const titles = await page.locator(".card-body b").allTextContents();
     console.log(titles);
     const count = await products.count();
 
-
+ //Add to cart
     for (let i=0; i< count; ++i)
 
         {
@@ -35,14 +37,18 @@ test ('Client App Login', async ({page}) =>
 
         }
 
+
+ //Confirm product present on cart
+
+
 await page.locator("[routerlink$='/dashboard/cart']").click();
 
 await page.locator("div li").nth(0).waitFor();
 
-//const bool = await page.locator(`h3:has-text('${productName}')`).isVisible();
-// expect(bool).toBeTruthy();
 
 await expect(page.locator(`h3:has-text('${productName}')`)).toBeVisible();
+
+//Checkout
 
 await page.locator("text=Checkout").click();
 await page.locator("[value$='4542 9931 9292 2293']").fill("");
@@ -80,11 +86,15 @@ for (let i=0; i<optionsCount; ++i)
 
     }
 
+// Order details page
+
    await expect( await page.locator (".user__name label")).toHaveText(email);
    await page.locator(".btnn.action__submit.ng-star-inserted").click();
    await expect( await page.locator (".hero-primary")).toHaveText(" Thankyou for the order. ");
    const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
    console.log(orderId);
+
+ // Order history
 
    await page.locator("button[routerlink$='/dashboard/myorders']").click();
    await page.locator("tbody").waitFor();
@@ -106,6 +116,8 @@ for (let i=0; i<optionsCount; ++i)
 
             }
     }
+
+//Order confirmations
 
     const orderIDDetails = await page.locator(".col-text.-main").textContent();
     await expect (orderId.includes(orderIDDetails)).toBeTruthy();
