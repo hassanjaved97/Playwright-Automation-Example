@@ -27,7 +27,7 @@ test ('Client App Login', async ({page}) =>
             if (await products.nth(i).locator("b").textContent() == productName)
 
                 {
-                    // add to cart
+                    
                     await products.nth(i).locator("text = Add To Cart").click();
                     break;
 
@@ -45,6 +45,7 @@ await page.locator("[routerlink$='/dashboard/cart']").click();
 
 await page.locator("div li").nth(0).waitFor();
 
+// Asseryion for Product confirm
 
 await expect(page.locator(`h3:has-text('${productName}')`)).toBeVisible();
 
