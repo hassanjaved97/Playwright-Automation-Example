@@ -30,7 +30,7 @@ const config = {
     
   },
 
-  retries: 2,
+  retries: 0,
   
 };
 

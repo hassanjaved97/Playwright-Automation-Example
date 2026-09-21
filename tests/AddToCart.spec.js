@@ -5,8 +5,9 @@ test ('Client App Login', async ({page}) =>
 
     {
       
-//login    
-    const email = "umairjaveid+4@gmail.com";
+//Signup
+    const Timestamp = Date.now();
+   const email = `umairjaveid+${Timestamp}@gmail.com`;
     const productName = 'iphone 13 pro';   
     const products = page.locator(".card-body");    
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login", { waitUntil: 'domcontentloaded' });
@@ -25,19 +26,21 @@ await page.locator('input#login').click();
 await page.waitForLoadState('networkidle');
 await page.locator(".btn.btn-primary").click();
 
+//Signin
+
 await page.locator('#userEmail').fill(email);
 
 await page.locator('#userPassword').fill("Pakistan@123");
 await page.locator('input#login').click();
 
-await page.waitForLoadState('networkidle');
-
-
- //Add to cart
-
+ // Wait for product cards to actually render before searching
+   await page.locator(".card-body").first().waitFor();
    const titles = await page.locator(".card-body b").allTextContents();
     console.log(titles);
     const count = await products.count();
+
+     //Add to cart
+
     for (let i=0; i< count; ++i)
 
         {
@@ -60,7 +63,7 @@ await page.waitForLoadState('networkidle');
 
 await page.locator("[routerlink$='/dashboard/cart']").click();
 
-await page.locator("div li").nth(0).waitFor();
+await page.locator("div li").first().waitFor();
 
 // Asseryion for Product confirm
 
@@ -137,7 +140,7 @@ for (let i=0; i<optionsCount; ++i)
             }
     }
 
-//Order confirmations
+//Order validations
 
     const orderIDDetails = await page.locator(".col-text.-main").textContent();
     await expect (orderId.includes(orderIDDetails)).toBeTruthy();
@@ -149,7 +152,8 @@ for (let i=0; i<optionsCount; ++i)
     console.log(addressEmail);
     expect(addressEmail?.trim()).toBe(email); 
 
-    const country = await page.locator(".address").first().locator(".text").last().textContent();
+    const rawtext = await page.locator(".address").first().locator(".text").last().textContent();
+    const country = rawtext.split("-").pop().trim();
     console.log(country);
     expect(CountryName?.trim()).toBe(country); 
 
