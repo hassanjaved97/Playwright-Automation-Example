@@ -6,21 +6,38 @@ test ('Client App Login', async ({page}) =>
     {
       
 //login    
-    const email = "hassan102@gmail.com";
+    const email = "umairjaveid+4@gmail.com";
     const productName = 'iphone 13 pro';   
     const products = page.locator(".card-body");    
-    await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
-    await page.locator("#userEmail").fill(email);
-    await page.locator("#userPassword").fill("Pakistan@123");
-    await page.locator("#login").click();
-    await page.waitForLoadState('networkidle');
-    
-    
-    const titles = await page.locator(".card-body b").allTextContents();
-    console.log(titles);
-    const count = await products.count();
+    await page.goto("https://rahulshettyacademy.com/client/#/auth/login", { waitUntil: 'domcontentloaded' });
+    await page.locator('.banner .btn1').click();
+    await page.locator('#firstName').fill("Umair");
+    await page.locator('#lastName').fill("Javeid");
+    await page.locator('#userEmail').fill(email);
+    await page.locator('#userMobile').fill("3030892500");
+    await page.locator('#userPassword').fill("Pakistan@123");
+    await page.locator('#confirmPassword').fill("Pakistan@123");
+
+ await page.locator('input[type="checkbox"]').check();
+
+await page.locator('input#login').click();
+
+await page.waitForLoadState('networkidle');
+await page.locator(".btn.btn-primary").click();
+
+await page.locator('#userEmail').fill(email);
+
+await page.locator('#userPassword').fill("Pakistan@123");
+await page.locator('input#login').click();
+
+await page.waitForLoadState('networkidle');
+
 
  //Add to cart
+
+   const titles = await page.locator(".card-body b").allTextContents();
+    console.log(titles);
+    const count = await products.count();
     for (let i=0; i< count; ++i)
 
         {
@@ -62,21 +79,23 @@ const cvv = page.locator('div.field.small', { hasText: 'CVV Code' }).locator('in
 await cvv.fill("123");
 
 const CardName = page.locator('div.field', { hasText: 'Name on Card ' }).locator('input');
-await CardName.fill("Hassan javed");
+await CardName.fill("Umair Javeid");
 
 await page.locator("[placeholder$='Select Country']").type("pak", {delay:100});
+const CountryName = "Pakistan";
 
 
 const dropdown = page.locator(".ta-results");
 await dropdown.waitFor();
 const optionsCount = await dropdown.locator("button").count();
 
+
 for (let i=0; i<optionsCount; ++i)
 
     {
       const text = await dropdown.locator("button").nth(i).textContent();
 
-        if (text.trim() === "Pakistan")
+        if (text.trim() === CountryName)
 
             {
 
@@ -129,6 +148,12 @@ for (let i=0; i<optionsCount; ++i)
     const addressEmail = await page.locator(".address").first().locator(".text").first().textContent();
     console.log(addressEmail);
     expect(addressEmail?.trim()).toBe(email); 
+
+    const country = await page.locator(".address").first().locator(".text").last().textContent();
+    console.log(country);
+    expect(CountryName?.trim()).toBe(country); 
+
+
 
 
 });
