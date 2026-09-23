@@ -4,44 +4,41 @@ const { text } = require('node:stream/consumers');
 test ('Client App Login', async ({page}) =>
 
     {
-      
-//Signup
     const Timestamp = Date.now();
-   const email = `umairjaveid+${Timestamp}@gmail.com`;
-    const productName = 'iphone 13 pro';   
-    const products = page.locator(".card-body");    
+    const email = `umairjaveid+${Timestamp}@gmail.com`;
+    const Password = "Pakistan@123";
+    const productName = 'iphone 13 pro';
+    const userMobile =  "3030892500";
+    const products = page.locator(".card-body"); 
+    
+//Signup
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login", { waitUntil: 'domcontentloaded' });
     await page.locator('.banner .btn1').click();
     await page.locator('#firstName').fill("Umair");
     await page.locator('#lastName').fill("Javeid");
     await page.locator('#userEmail').fill(email);
-    await page.locator('#userMobile').fill("3030892500");
-    await page.locator('#userPassword').fill("Pakistan@123");
-    await page.locator('#confirmPassword').fill("Pakistan@123");
+    await page.locator('#userMobile').fill(userMobile);
+    await page.locator('#userPassword').fill(Password);
+    await page.locator('#confirmPassword').fill(Password);
 
- await page.locator('input[type="checkbox"]').check();
-
-await page.locator('input#login').click();
-
-await page.waitForLoadState('networkidle');
-await page.locator(".btn.btn-primary").click();
+    await page.locator('input[type="checkbox"]').check();
+    await page.locator('input#login').click();
+    await page.waitForLoadState('networkidle');
+    await page.locator(".btn.btn-primary").click();
 
 //Signin
-
 await page.locator('#userEmail').fill(email);
-
-await page.locator('#userPassword').fill("Pakistan@123");
+await page.locator('#userPassword').fill(Password);
 await page.locator('input#login').click();
 
- // Wait for product cards to actually render before searching
+// Wait for product cards to actually render before searching
    await page.locator(".card-body").first().waitFor();
    const titles = await page.locator(".card-body b").allTextContents();
     console.log(titles);
     const count = await products.count();
 
      //Add to cart
-
-    for (let i=0; i< count; ++i)
+for (let i=0; i< count; ++i)
 
         {
             if (await products.nth(i).locator("b").textContent() == productName)
@@ -59,18 +56,14 @@ await page.locator('input#login').click();
 
 
  //Confirm product present on cart
-
-
 await page.locator("[routerlink$='/dashboard/cart']").click();
 
 await page.locator("div li").first().waitFor();
 
 // Asseryion for Product confirm
-
 await expect(page.locator(`h3:has-text('${productName}')`)).toBeVisible();
 
 //Checkout
-
 await page.locator("text=Checkout").click();
 await page.locator("[value$='4542 9931 9292 2293']").fill("");
 await page.locator("[value$='4542 9931 9292 2293']").fill("1234 5678 0000 2222");
@@ -110,7 +103,6 @@ for (let i=0; i<optionsCount; ++i)
     }
 
 // Order details page
-
    await expect( await page.locator (".user__name label")).toHaveText(email);
    await page.locator(".btnn.action__submit.ng-star-inserted").click();
    await expect( await page.locator (".hero-primary")).toHaveText(" Thankyou for the order. ");
@@ -118,7 +110,6 @@ for (let i=0; i<optionsCount; ++i)
    console.log(orderId);
 
  // Order history
-
    await page.locator("button[routerlink$='/dashboard/myorders']").click();
    await page.locator("tbody").waitFor();
    const rows = await page.locator("tbody tr");
@@ -141,17 +132,15 @@ for (let i=0; i<optionsCount; ++i)
     }
 
 //Order validations
-
     const orderIDDetails = await page.locator(".col-text.-main").textContent();
     await expect (orderId.includes(orderIDDetails)).toBeTruthy();
 
-    //await expect(await page.locator(".col-text")).toHaveText(orderId);
-    //await page.pause();
-
+//Email Adress Confirmation
     const addressEmail = await page.locator(".address").first().locator(".text").first().textContent();
     console.log(addressEmail);
     expect(addressEmail?.trim()).toBe(email); 
 
+//Country detail Confirmation
     const rawtext = await page.locator(".address").first().locator(".text").last().textContent();
     const country = rawtext.split("-").pop().trim();
     console.log(country);

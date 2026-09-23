@@ -26,6 +26,16 @@ test ("Popup validations", async ({page})=>
         await page.locator ("#confirmbtn").click();
         await page.locator("#mousehover").hover();
 
+        //frames
+        const framePage = page.frameLocator("#courses-iframe");
+        await framePage.locator();
+
+
+        //
+
+        const framepage = page.frameLocator("#courses-iframe");
+        framePage.locator("");
+
 
 
 
