@@ -2,6 +2,7 @@ const {test, expect} = require ('@playwright/test');
 const { text } = require('node:stream/consumers');
 const {LoginPage} = require ('../.github/workflows/PageObject/LoginPage')
 
+
 test ('Client App Login', async ({page}) =>
 
     {
@@ -13,8 +14,10 @@ test ('Client App Login', async ({page}) =>
     const products = page.locator(".card-body"); 
     
     
+    
 //Signup
-    await page.goto("https://rahulshettyacademy.com/client/#/auth/login", { waitUntil: 'domcontentloaded' });
+    await page.goto("https://rahulshettyacademy.com/client/#/auth/login", 
+    { waitUntil: 'domcontentloaded' });
     await page.locator('.banner .btn1').click();
     await page.locator('#firstName').fill("Umair");
     await page.locator('#lastName').fill("Javeid");
@@ -29,11 +32,9 @@ test ('Client App Login', async ({page}) =>
     await page.locator(".btn.btn-primary").click();
 
 //Signin
-
-    const login = new LoginPage (page);
-    await login.goTo();
-    await login.validLogin(email,Password );
-
+    const loginPage = new LoginPage(page);    
+    await loginPage.goTo();
+    await loginPage.validLogin(email,Password)
 
 // Wait for product cards to actually render before searching
    await page.locator(".card-body").first().waitFor();
