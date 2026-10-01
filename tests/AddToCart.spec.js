@@ -1,10 +1,13 @@
 const {test, expect} = require ('@playwright/test');
-const { text } = require('node:stream/consumers');
-const {LoginPage} = require ('../.github/workflows/PageObject/LoginPage')
+const {POmanager} = require ('../.github/workflows/PageObject/POmanager');
 
 test ('Client App Login', async ({page}) =>
 
     {
+
+    const Manager = new POmanager (page);
+    const firstname = 'Uamir';
+    const lastname = 'Javeid'
     const Timestamp = Date.now();
     const email = `umairjaveid+${Timestamp}@gmail.com`;
     const Password = "Pakistan@123";
@@ -14,58 +17,27 @@ test ('Client App Login', async ({page}) =>
     
     
 //Signup
-    await page.goto("https://rahulshettyacademy.com/client/#/auth/login", { waitUntil: 'domcontentloaded' });
-    await page.locator('.banner .btn1').click();
-    await page.locator('#firstName').fill("Umair");
-    await page.locator('#lastName').fill("Javeid");
-    await page.locator('#userEmail').fill(email);
-    await page.locator('#userMobile').fill(userMobile);
-    await page.locator('#userPassword').fill(Password);
-    await page.locator('#confirmPassword').fill(Password);
-
-    await page.locator('input[type="checkbox"]').check();
-    await page.locator('input#login').click();
-    await page.waitForLoadState('networkidle');
-    await page.locator(".btn.btn-primary").click();
+    const signup = Manager.getSignPage();
+    await signup.goTo();
+    await signup.validsignup(firstname, lastname, email,userMobile,Password);
 
 //Signin
 
-    const login = new LoginPage (page);
+    const login = Manager.getLoginPage();
     await login.goTo();
     await login.validLogin(email,Password );
 
 
-// Wait for product cards to actually render before searching
-   await page.locator(".card-body").first().waitFor();
-   const titles = await page.locator(".card-body b").allTextContents();
-    console.log(titles);
-    const count = await products.count();
+// serach product
+  const addcart = Manager.getAddtocart();
+  await addcart.searchproducts(productName);
+  await addcart.navigatetocart();
 
-     //Add to cart
-for (let i=0; i< count; ++i)
-
-        {
-            if (await products.nth(i).locator("b").textContent() == productName)
-
-                {
-                    
-                    await products.nth(i).locator("text = Add To Cart").click();
-                    break;
-
-                }
-
-
-
-        }
-
-
- //Confirm product present on cart
-await page.locator("[routerlink$='/dashboard/cart']").click();
-
-await page.locator("div li").first().waitFor();
+   
 
 // Asseryion for Product confirm
-await expect(page.locator(`h3:has-text('${productName}')`)).toBeVisible();
+
+await addcart.confirmproduct(productName);
 
 //Checkout
 await page.locator("text=Checkout").click();

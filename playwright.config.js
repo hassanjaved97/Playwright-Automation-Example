@@ -1,38 +1,24 @@
 // @ts-check
-const { defineConfig, devices, chromium } = require('@playwright/test');
-const { trace } = require('node:console');
+const { defineConfig, devices } = require('@playwright/test');
 
-
-
-/**
- * @see https://playwright.dev/docs/test-configuration
- */
-const config = {
+module.exports = defineConfig({
   testDir: './tests',
   timeout: 60 * 1000,
-
   expect: {
-
-      timeout: 5000,
-
+    timeout: 5000,
   },
-
-  reporter:'html',
-  
-  use: {
-    browserName: 'chromium',
-    headless : true,
-    screenshot : 'on',
-    trace: 'retain-on-failure', //on - off
-    navigationTimeout: 30000,
-    // trace: 'on'
-
-    
-  },
-
+  reporter: 'html',
   retries: 0,
-  
-};
-
-
-module.exports = config;
+  use: {
+    headless: true,
+    screenshot: 'on',
+    trace: 'retain-on-failure',
+    navigationTimeout: 30000,
+  },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
+});

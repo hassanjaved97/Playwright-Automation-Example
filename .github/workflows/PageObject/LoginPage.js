@@ -24,6 +24,8 @@ async validLogin(email, password){
 await this.username.fill(email);
 await this.password.fill(password);
 await this.SignInbutton.click();
+await this.page.locator(".card-body").first().waitFor();
+
 
 }
 
