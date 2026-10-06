@@ -12,7 +12,7 @@ module.exports = defineConfig({
   use: {
     headless: true,
     screenshot: 'on',
-    trace: 'retain-on-failure',
+    trace: 'on',
     navigationTimeout: 30000,
   },
   projects: [

@@ -1,43 +1,42 @@
 const {test, expect} = require ('@playwright/test');
-const {POmanager} = require ('../.github/workflows/PageObject/POmanager');
+const {POmanager} = require ('../PageObject/POmanager');
 
-test ('Client App Login', async ({page}) =>
+// JSON --> string --> js object
+const dataset = JSON.parse (JSON.stringify(require ("../utils/placeorderTestData.json")));
+
+
+for (const data of dataset) {
+
+test ( `Client App Login' ${data.productName}`, async ({page}) =>
 
     {
 
     const Manager = new POmanager (page);
-    const firstname = 'Uamir';
-    const lastname = 'Javeid'
     const Timestamp = Date.now();
-    const email = `umairjaveid+${Timestamp}@gmail.com`;
-    const Password = "Pakistan@123";
-    const productName = 'iphone 13 pro';
-    const userMobile =  "3030892500";
-    const products = page.locator(".card-body"); 
-    
+        
     
 //Signup
     const signup = Manager.getSignPage();
     await signup.goTo();
-    await signup.validsignup(firstname, lastname, email,userMobile,Password);
+    await signup.validsignup(data.firstname, data.lastname, data.email, data.userMobile, data.Password);
 
 //Signin
 
     const login = Manager.getLoginPage();
     await login.goTo();
-    await login.validLogin(email,Password );
+    await login.validLogin(data.email,data.Password );
 
 
 // serach product
   const addcart = Manager.getAddtocart();
-  await addcart.searchproducts(productName);
+  await addcart.searchproducts(data.productName);
   await addcart.navigatetocart();
 
    
 
 // Asseryion for Product confirm
 
-await addcart.confirmproduct(productName);
+await addcart.confirmproduct(data.productName);
 
 //Checkout
 await page.locator("text=Checkout").click();
@@ -79,7 +78,7 @@ for (let i=0; i<optionsCount; ++i)
     }
 
 // Order details page
-   await expect( await page.locator (".user__name label")).toHaveText(email);
+   await expect( await page.locator (".user__name label")).toHaveText(data.email);
    await page.locator(".btnn.action__submit.ng-star-inserted").click();
    await expect( await page.locator (".hero-primary")).toHaveText(" Thankyou for the order. ");
    const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
@@ -114,7 +113,7 @@ for (let i=0; i<optionsCount; ++i)
 //Email Adress Confirmation
     const addressEmail = await page.locator(".address").first().locator(".text").first().textContent();
     console.log(addressEmail);
-    expect(addressEmail?.trim()).toBe(email); 
+    expect(addressEmail?.trim()).toBe(data.email); 
 
 //Country detail Confirmation
     const rawtext = await page.locator(".address").first().locator(".text").last().textContent();
@@ -126,3 +125,5 @@ for (let i=0; i<optionsCount; ++i)
 
 
 });
+
+}

@@ -20,7 +20,6 @@ async goTo()
 }
 
 async validLogin(email, password){
-
 await this.username.fill(email);
 await this.password.fill(password);
 await this.SignInbutton.click();
