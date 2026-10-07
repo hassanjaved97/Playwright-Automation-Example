@@ -3,9 +3,9 @@ const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests',
-  timeout: 60 * 1000,
+  timeout: 10 * 1000,
   expect: {
-    timeout: 5000,
+    timeout: 1000,
   },
   reporter: 'html',
   retries: 0,
@@ -17,8 +17,13 @@ module.exports = defineConfig({
         ...devices['Desktop Chrome'],
         headless: false,             // visible browser
         screenshot: 'on',            // screenshot for every test
-        trace: 'on',                 // trace for every test
-        viewport: { width: 1280, height: 720 },
+        trace: 'on',                 // logs
+        video : 'retain-on-failure',
+        ignoreHTTPSErrors : true,
+        permissions : ['geolocation'],                // trace for every test
+        //viewport: { width: 720, height: 720 },
+        ...devices ['Galaxy S III'],
+        
       },
     },
     {
